@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -87,5 +89,10 @@ public class UserService {
             throw new RefreshTokenImproperUseException("회원탈퇴 할때 액세스토큰을 사용해 주세요. 액세스토큰이 없다면 리프레시 토큰으로 재발급해주세요.");
         }
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public List<UserInfo> display() {
+        return userRepository.findAll();
     }
 }
