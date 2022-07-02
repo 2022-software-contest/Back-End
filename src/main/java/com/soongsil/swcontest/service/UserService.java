@@ -56,7 +56,7 @@ public class UserService {
         if (user==null) {
             throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
         }
-        if (!user.getRefreshToken().equals(refreshToken)) {
+        if (!refreshToken.equals(user.getRefreshToken())) {
             throw new RefreshTokenNotFoundException("리프레시 토큰을 찾을 수 없습니다. 다시 로그인 하세요.");
         }
 
@@ -74,6 +74,10 @@ public class UserService {
 
         if (accessToken.equals(user.getRefreshToken())) {
             throw new RefreshTokenImproperUseException("로그아웃 할때 액세스토큰을 사용해 주세요. 액세스토큰이 없다면 리프레시 토큰으로 재발급해주세요.");
+        }
+
+        if (user.getRefreshToken()==null) {
+            throw new AlreadyLogoutException("이미 로그아웃된 사용자 입니다. 다시 로그인 해주세요.");
         }
         user.setRefreshToken(null);
     }

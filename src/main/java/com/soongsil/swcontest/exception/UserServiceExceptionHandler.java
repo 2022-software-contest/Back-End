@@ -47,4 +47,11 @@ public class UserServiceExceptionHandler {
         log.warn("에러코드 : 유저서비스 오류 5번, 요청 URI : " + request.getRequestURI() + ", 에러 메시지 : " + exception.getMessage());
         return new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "유저서비스 오류 5번", exception.getMessage(), request.getRequestURI());
     }
+
+    @ExceptionHandler(AlreadyLogoutException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleAlreadyLogoutException(AlreadyLogoutException exception, HttpServletRequest request) {
+        log.warn("에러코드 : 유저서비스 오류 6번, 요청 URI : " + request.getRequestURI() + ", 에러 메시지 : " + exception.getMessage());
+        return new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(), "유저서비스 오류 6번", exception.getMessage(), request.getRequestURI());
+    }
 }

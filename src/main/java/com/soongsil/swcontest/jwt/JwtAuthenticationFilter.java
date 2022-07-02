@@ -21,20 +21,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try {
-            String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-            String jwtToken = jwtTokenProvider.resolveToken(bearerToken);
-            if(jwtToken != null &&
-                jwtTokenProvider.validateToken(jwtToken)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-            else {
-                throw new InvalidTokenException("토큰이 유효하지 않습니다.");
-            }
-            filterChain.doFilter(request, response);
-        } catch (HeaderHasNotAuthorization e) {
-            throw new HeaderHasNotAuthorization("Authorization 헤더가 요청에 없습니다.");
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (bearerToken==null) {
+            throw new HeaderHasNotAuthorization("Authorization헤더에 토큰이 없습니다.");
         }
+        String jwtToken = jwtTokenProvider.resolveToken(bearerToken);
+        if(jwtToken != null &&
+            jwtTokenProvider.validateToken(jwtToken)) {
+            Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        else {
+            throw new InvalidTokenException("토큰이 유효하지 않습니다.");
+        }
+        filterChain.doFilter(request, response);
     }
 }
