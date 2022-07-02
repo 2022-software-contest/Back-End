@@ -60,4 +60,19 @@ public class LogoutTest extends BaseTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 5번"));
     }
+
+    @Test
+    @DisplayName("로그아웃 테스트(실패)-로그아웃을 2번한 경우")
+    public void logoutFailBecauseAlreadyLogout() throws Exception {
+        // given
+        userService.logout(signInResponseDto.getAccessToken(),signInResponseDto.getEmail());
+        // when
+        ResultActions result = mockMvc.perform(post("/v1/logout")
+                .header("Authorization",signInResponseDto.getRefreshToken())
+                .contentType(MediaType.APPLICATION_JSON));
+        //then
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("errorCode").value("유저서비스 오류 6번"));
+    }
 }
