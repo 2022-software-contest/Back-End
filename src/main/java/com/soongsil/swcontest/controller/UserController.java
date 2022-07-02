@@ -5,6 +5,7 @@ import com.soongsil.swcontest.dto.request.SignUpRequestDto;
 import com.soongsil.swcontest.dto.response.ReissueResponseDto;
 import com.soongsil.swcontest.dto.response.SignInResponseDto;
 import com.soongsil.swcontest.dto.response.SignUpResponseDto;
+import com.soongsil.swcontest.entity.UserInfo;
 import com.soongsil.swcontest.security.AuthInfo;
 import com.soongsil.swcontest.security.Authenticated;
 import com.soongsil.swcontest.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class UserController {
         return userService.signUp(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getUsername(), signUpRequestDto.getRole());
     }
 
-    @ApiOperation("로그인 a")
+    @ApiOperation("로그인")
     @PostMapping("/v1/signIn")
     public SignInResponseDto signIn(@Valid @RequestBody SignInRequestDto signInRequestDto) {
         return userService.signIn(signInRequestDto.getEmail(), signInRequestDto.getPassword());
@@ -57,5 +59,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void withdraw(@Authenticated AuthInfo authInfo) {
         userService.withdraw(authInfo.getToken(), authInfo.getEmail());
+    }
+
+    @ApiOperation("회원 조회 개발용도")
+    @GetMapping("/v1/display")
+    public List<UserInfo> display() {
+        return userService.display();
     }
 }
