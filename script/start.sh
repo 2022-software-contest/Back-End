@@ -8,9 +8,9 @@ IDLE_PORT=$(find_idle_port)
 REPOSITORY=/home/ec2-user
 
 echo "> Build 파일 복사"
-echo "> cp $ABSDIR/build/libs/docker-0.0.1-SNAPSHOT.jar $REPOSITORY"
+echo "> cp $ABSDIR/../build/libs/docker-0.0.1-SNAPSHOT.jar $REPOSITORY"
 
-cp $ABSDIR/build/libs/docker-0.0.1-SNAPSHOT.jar $REPOSITORY      # 새로운 jar file 계속 덮어쓰기
+cp $ABSDIR/../build/libs/docker-0.0.1-SNAPSHOT.jar $REPOSITORY      # 새로운 jar file 계속 덮어쓰기
 
 echo "> 새 어플리케이션 배포"
 JAR_NAME=$(ls -tr $REPOSITORY/*.jar | tail -n 1)
