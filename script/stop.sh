@@ -19,6 +19,10 @@ echo "> 현재 프로필은 무엇?? ${IDLE_PROFILE}"
 if [ -z ${CONTAINER_ID} ]
 then
   echo "> 현재 구동중인 애플리케이션이 없으므로 종료하지 않습니다."
+  echo "> docker container prune -f"
+  sudo docker container prune -f
+  echo "> docker image prune -f"
+  sudo docker image prune -f
 else
   echo "> docker stop ${IDLE_PROFILE}"
   sudo docker stop ${IDLE_PROFILE}
