@@ -1,5 +1,6 @@
 package com.soongsil.swcontest.config;
 
+import com.soongsil.swcontest.security.AuthInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,7 +15,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -23,6 +23,7 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.OAS_30)
+                .ignoredParameterTypes(AuthInfo.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.soongsil.swcontest"))
                 .paths(PathSelectors.any())
