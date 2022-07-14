@@ -4,7 +4,6 @@ import com.soongsil.swcontest.enums.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,7 +13,6 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 public class UserInfo extends DateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,4 +33,8 @@ public class UserInfo extends DateEntity {
     private RoleType role;
 
     private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

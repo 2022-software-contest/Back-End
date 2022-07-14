@@ -46,7 +46,7 @@ public class UserService {
 
         TokenInfo accessTokenDto = jwtTokenProvider.createJwtAccessToken(email);
         TokenInfo refreshTokenDto = jwtTokenProvider.createJwtRefreshToken(email);
-        user.setRefreshToken(refreshTokenDto.getToken());
+        user.updateRefreshToken(refreshTokenDto.getToken());
         return new SignInResponseDto(user.getEmail(), user.getUsername(), user.getRole(), accessTokenDto.getToken(), refreshTokenDto.getToken());
     }
 
@@ -62,6 +62,7 @@ public class UserService {
 
         TokenInfo accessTokenDto = jwtTokenProvider.createJwtAccessToken(email);
         TokenInfo refreshTokenDto = jwtTokenProvider.createJwtRefreshToken(email);
+        user.updateRefreshToken(refreshTokenDto.getToken());
         return new ReissueResponseDto(email, accessTokenDto.getToken(), refreshTokenDto.getToken());
     }
 
@@ -79,7 +80,7 @@ public class UserService {
         if (user.getRefreshToken()==null) {
             throw new AlreadyLogoutException("이미 로그아웃된 사용자 입니다. 다시 로그인 해주세요.");
         }
-        user.setRefreshToken(null);
+        user.updateRefreshToken(null);
     }
 
     @Transactional
