@@ -30,6 +30,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// swagger 문서화
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	// 이미지 S3 업로드
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {

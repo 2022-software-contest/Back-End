@@ -9,7 +9,23 @@ spring:
       ddl-auto: ${DDL_AUTO}
     database: mysql
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 server:
   port: ${SERVER_PORT}
 jwt:
   secret: ${JWT_SECRET}
+
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+    region:
+      static: ${BUCKET_REGION}
+    stack:
+      auto: false
