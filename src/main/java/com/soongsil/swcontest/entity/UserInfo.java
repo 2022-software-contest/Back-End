@@ -37,7 +37,7 @@ public class UserInfo extends DateEntity {
     private String refreshToken;
 
     @Cascade(value = CascadeType.ALL)
-    @OneToMany(mappedBy = "userInfo")
+    @OneToMany(mappedBy = "userInfo", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     public void updateRefreshToken(String refreshToken) {

@@ -82,7 +82,7 @@ public class ImageService {
                     findFlag = true;
                     String shortImageUrl = imageUrl.substring(baseUrl.length());
                     amazonS3Client.deleteObject(new DeleteObjectRequest(S3Bucket, shortImageUrl));
-                    imageRepository.delete(tmp);
+                    user.getImages().remove(tmp);
                     break;
                 }
             }
