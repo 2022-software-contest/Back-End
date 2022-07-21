@@ -1,8 +1,11 @@
 package com.soongsil.swcontest.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.soongsil.swcontest.dto.response.ReissueResponseDto;
 import com.soongsil.swcontest.dto.response.SignInResponseDto;
 import com.soongsil.swcontest.dto.response.SignUpResponseDto;
+import com.soongsil.swcontest.entity.Image;
 import com.soongsil.swcontest.entity.UserInfo;
 import com.soongsil.swcontest.enums.RoleType;
 import com.soongsil.swcontest.exception.userServiceException.*;
@@ -10,6 +13,7 @@ import com.soongsil.swcontest.jwt.JwtTokenProvider;
 import com.soongsil.swcontest.jwt.TokenInfo;
 import com.soongsil.swcontest.repository.UserInfoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +26,13 @@ public class UserService {
     private final UserInfoRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final AmazonS3Client amazonS3Client;
 
+    private final String baseUrl = "https://taewoon-s3.s3.ap-northeast-2.amazonaws.com/";
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String S3Bucket;
+    
     @Transactional
     public SignUpResponseDto signUp(String email, String password, String username, RoleType role) {
         if(userRepository.existsByEmail(email)) {
@@ -93,7 +103,12 @@ public class UserService {
         if (accessToken.equals(user.getRefreshToken())) {
             throw new RefreshTokenImproperUseException("회원탈퇴 할때 액세스토큰을 사용해 주세요. 액세스토큰이 없다면 리프레시 토큰으로 재발급해주세요.");
         }
-        userRepository.delete(user);
+        List<Image> images = user.getImages();
+        for (Image image : images) {
+            String shortImageUrl = image.getImageUrl().substring(baseUrl.length());
+            amazonS3Client.deleteObject(new DeleteObjectRequest(S3Bucket, shortImageUrl));
+        }
+        userRepository.deleteById(user.getId());
     }
 
     @Transactional
