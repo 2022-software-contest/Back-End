@@ -1,6 +1,5 @@
 package com.soongsil.swcontest.dto.request;
 
-import com.soongsil.swcontest.enums.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,21 +7,14 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
-public class SignUpRequestDto {
+public class AddProtegeRequestDto {
     @Email
     @NotBlank
-    private String email;
-    @NotBlank
-    private String password;
-    @NotBlank
-    private String username;
+    private String protegeEmail;
+
     @NotBlank
     private String phoneNumber;
-
-    private Boolean isGuardian = false;
-
-    private RoleType role;
 }

@@ -21,8 +21,8 @@ public class UploadImageTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        makeUser();
-        signInResponseDto = signInUser();
+        makeUser("testuser1@naver.com");
+        signInResponseDto = signInUser("testuser1@naver.com");
         mockMultipartFiles = makeTwoImages();
     }
 

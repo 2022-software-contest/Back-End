@@ -32,7 +32,12 @@ public class UserController {
     @ApiOperation("회원가입")
     @PostMapping("/v1/signUp")
     public SignUpResponseDto signUp(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
-        return userService.signUp(signUpRequestDto.getEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getUsername(), signUpRequestDto.getRole());
+        return userService.signUp(signUpRequestDto.getEmail(),
+                signUpRequestDto.getPassword(),
+                signUpRequestDto.getUsername(),
+                signUpRequestDto.getPhoneNumber(),
+                signUpRequestDto.getIsGuardian(),
+                signUpRequestDto.getRole());
     }
 
     @ApiOperation("로그인")

@@ -25,8 +25,8 @@ public class DeleteImageTest extends BaseTest {
 
     @BeforeEach
     public void setup() {
-        makeUser();
-        signInResponseDto = signInUser();
+        makeUser("testuser1@naver.com");
+        signInResponseDto = signInUser("testuser1@naver.com");
         UserInfo testUser = userInfoRepository.findByEmail(signInResponseDto.getEmail());
         imageRepository.save(new Image(null, testImageUrl1, testUser));
         imageRepository.save(new Image(null, testImageUrl2, testUser));

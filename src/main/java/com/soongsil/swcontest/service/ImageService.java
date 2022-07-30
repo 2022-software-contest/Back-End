@@ -68,7 +68,7 @@ public class ImageService {
         return new UploadImageResponseDto(fileNameList);
     }
 
-    public void deleteFile(String email, List<String> imageUrls) {
+    public void deleteImage(String email, List<String> imageUrls) {
         UserInfo user = userInfoRepository.findByEmail(email);
         if (user==null) {
             throw new UserNotFoundException("사용자를 찾을 수 없습니다.");

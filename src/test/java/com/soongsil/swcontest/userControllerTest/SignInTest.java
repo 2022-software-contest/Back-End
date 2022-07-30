@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SignInTest extends BaseTest {
     @BeforeEach
     private void setUp() {
-        userService.signUp(email, password, username, role);
+        userService.signUp(email, password, username, phoneNumber, isGuardian, role);
     }
 
     @Test
