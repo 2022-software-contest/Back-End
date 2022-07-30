@@ -15,7 +15,7 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(성공)")
     public void signUpTestSuccess() throws Exception {
         // given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, username, role);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, username, phoneNumber, isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))
@@ -32,7 +32,7 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(실패)-Email 형식이 아닐때")
     public void signUpFailBecauseInvalidEmailFormat() throws Exception {
         // given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("email", password, username, role);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("email", password, username, phoneNumber, isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))
@@ -47,7 +47,7 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(실패)-Email이 공백일 때")
     public void signUpFailBecauseEmailIsBlank() throws Exception {
         // given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(" ", password, username, role);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(" ", password, username, phoneNumber, isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))
@@ -62,8 +62,8 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(실패)-Email이 중복됬을때")
     public void signUpFailBecauseDuplicateEmail() throws Exception {
         // given
-        makeUser();
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, username, role);
+        makeUser("testuser1@naver.com");
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, username, phoneNumber, isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))
@@ -78,7 +78,7 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(실패)-Password가 공백일 때")
     public void signUpFailBecausePasswordIsBlank() throws Exception {
         // given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, " ", username, role);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, " ", username, phoneNumber, isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))
@@ -93,7 +93,22 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(실패)-Username이 공백일때")
     public void signUpFailBecauseUsernameIsBlank() throws Exception {
         // given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, " ", role);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, " ", phoneNumber, isGuardian, role);
+        // when
+        ResultActions result = mockMvc.perform(post("/v1/signUp")
+                .content(objectMapper.writeValueAsString(signUpRequestDto))
+                .contentType(MediaType.APPLICATION_JSON));
+        //then
+        result.andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("errorCode").value("시스템 오류 1번"));
+    }
+
+    @Test
+    @DisplayName("회원가입 테스트(실패)-PhoneNumber이 공백일때")
+    public void signUpFailBecausePhoneNumberIsBlank() throws Exception {
+        // given
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto(email, password, username, " ", isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))
@@ -108,7 +123,7 @@ public class SignUpTest extends BaseTest {
     @DisplayName("회원가입 테스트(실패) - 잘못된 Media Type 요청")
     public void signUpFailBecauseInvalidMediaTypeRequest() throws Exception {
         // given
-        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("email", password, username, role);
+        SignUpRequestDto signUpRequestDto = new SignUpRequestDto("email", password, username, phoneNumber, isGuardian, role);
         // when
         ResultActions result = mockMvc.perform(post("/v1/signUp")
                 .content(objectMapper.writeValueAsString(signUpRequestDto))

@@ -36,20 +36,32 @@ public class UserInfo extends DateEntity {
 
     private String refreshToken;
 
+    private String phoneNumber;
+
     @Cascade(value = CascadeType.ALL)
     @OneToMany(mappedBy = "userInfo", orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "guardian", orphanRemoval = true)
+    private List<GuardianProtege> guardians = new ArrayList<>();
+
+    @OneToMany(mappedBy = "protege", orphanRemoval = true)
+    private List<GuardianProtege> proteges = new ArrayList<>();
+
+    private Boolean isGuardian = false;
 
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
-    public UserInfo(Long id, String email, String password, String username, RoleType role, String refreshToken) {
+    public UserInfo(Long id, String email, String password, String username, RoleType role, String refreshToken, String phoneNumber, Boolean isGuardian) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.username = username;
         this.role = role;
         this.refreshToken = refreshToken;
+        this.phoneNumber = phoneNumber;
+        this.isGuardian = isGuardian;
     }
 }

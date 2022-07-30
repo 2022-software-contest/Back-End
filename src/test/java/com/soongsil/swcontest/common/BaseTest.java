@@ -3,11 +3,14 @@ package com.soongsil.swcontest.common;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soongsil.swcontest.controller.ImageController;
+import com.soongsil.swcontest.dto.response.AddProtegeResponseDto;
 import com.soongsil.swcontest.dto.response.SignInResponseDto;
 import com.soongsil.swcontest.enums.RoleType;
 import com.soongsil.swcontest.jwt.JwtTokenProvider;
+import com.soongsil.swcontest.repository.GuardianProtegeRepository;
 import com.soongsil.swcontest.repository.ImageRepository;
 import com.soongsil.swcontest.repository.UserInfoRepository;
+import com.soongsil.swcontest.service.GuardianProtegeService;
 import com.soongsil.swcontest.service.ImageService;
 import com.soongsil.swcontest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +61,11 @@ public class BaseTest {
     @MockBean
     public AmazonS3Client amazonS3Client;
 
+    @Autowired
+    public GuardianProtegeService guardianProtegeService;
+    @Autowired
+    public GuardianProtegeRepository guardianProtegeRepository;
+
     @PersistenceContext
     public EntityManager em;
 
@@ -66,11 +74,19 @@ public class BaseTest {
     public String username = "testusername1";
     public RoleType role = RoleType.USER;
 
-    public void makeUser() {
-        userService.signUp(email, password, username, role);
+    public String phoneNumber = "01011112222";
+
+    public Boolean isGuardian = false;
+
+    public void makeUser(String email) {
+        userService.signUp(email, password, username, phoneNumber, isGuardian, role);
     }
 
-    public SignInResponseDto signInUser() {
+    public void makeUser(String email, Boolean isGuardian) {
+        userService.signUp(email, password, username, phoneNumber, isGuardian, role);
+    }
+
+    public SignInResponseDto signInUser(String email) {
         return userService.signIn(email, password);
     }
 
@@ -81,5 +97,9 @@ public class BaseTest {
         mockMultipartFiles.add(image1);
         mockMultipartFiles.add(image2);
         return mockMultipartFiles;
+    }
+
+    public AddProtegeResponseDto addProtege(String guardianEmail, String protegeEmail, String protegePhoneNumber) {
+        return guardianProtegeService.addProtege(guardianEmail, protegeEmail, protegePhoneNumber);
     }
 }

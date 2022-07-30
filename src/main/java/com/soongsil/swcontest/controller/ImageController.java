@@ -21,14 +21,14 @@ public class ImageController {
 
     @ApiOperation("처방전 사진 올리기 다중 첨부 가능")
     @PostMapping("/v1/uploadImage")
-    public UploadImageResponseDto uploadImage(@Authenticated AuthInfo authInfo, @RequestPart("image") List<MultipartFile> multipartFiles) throws Exception {
+    public UploadImageResponseDto uploadImage(@Authenticated AuthInfo authInfo, @RequestPart("image") List<MultipartFile> multipartFiles) {
         return imageService.uploadImage(authInfo.getEmail(), multipartFiles);
     }
 
-    @ApiOperation("올린 처방전 삭제하기")
+    @ApiOperation("올린 처방전 삭제하기 다중 삭제 가능")
     @PostMapping("/v1/deleteImage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteImage(@Authenticated AuthInfo authInfo,@Valid @RequestBody DeleteImageRequestDto deleteImageRequestDto) {
-        imageService.deleteFile(authInfo.getEmail(), deleteImageRequestDto.getImageUrls());
+        imageService.deleteImage(authInfo.getEmail(), deleteImageRequestDto.getImageUrls());
     }
 }

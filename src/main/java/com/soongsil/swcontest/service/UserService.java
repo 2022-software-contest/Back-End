@@ -34,12 +34,12 @@ public class UserService {
     private String S3Bucket;
     
     @Transactional
-    public SignUpResponseDto signUp(String email, String password, String username, RoleType role) {
+    public SignUpResponseDto signUp(String email, String password, String username, String phoneNumber, Boolean isGuardian, RoleType role) {
         if(userRepository.existsByEmail(email)) {
             throw new ExistsEmailException("이미 가입한 이메일 입니다.");
         }
         userRepository.save(
-                new UserInfo(null, email, bCryptPasswordEncoder.encode(password), username, RoleType.USER, null)
+                new UserInfo(null, email, bCryptPasswordEncoder.encode(password), username, RoleType.USER, null, phoneNumber, isGuardian)
         );
         return new SignUpResponseDto(email, username, role);
     }
