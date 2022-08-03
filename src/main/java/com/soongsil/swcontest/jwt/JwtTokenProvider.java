@@ -23,7 +23,7 @@ public class JwtTokenProvider {
     private final long ACCESS_TOKEN_VALID_TIME = (1000 * 60 * 60 * 24); // 하루
     private final long REFRESH_TOKEN_VALID_TIME = (1000 * 60 * 60 * 24 * 7); // 일주일
     private final String BEARER_TYPE = "Bearer ";
-    @Value("jwt.secret")
+    @Value("${jwt.secret}")
     private String secretKey;
 
     public TokenInfo createJwtAccessToken(String email) {

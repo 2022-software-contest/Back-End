@@ -50,7 +50,8 @@ public class WebSecurityConfig {
                 "/v1/signUp",
                 "/v1/signIn",
                 "/v1/display",
-                "/"
+                "/",
+                "/v1/push"
         );
     }
 

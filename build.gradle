@@ -32,6 +32,12 @@ dependencies {
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	// 이미지 S3 업로드
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	// quartz 스케쥴러 라이브러리
+	implementation 'org.springframework.boot:spring-boot-starter-quartz'
+	// 파이어베이스 푸시알림 라이브러리
+	implementation 'com.google.firebase:firebase-admin:9.0.0'
+	// 통신 라이브러리
+	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 }
 
 tasks.named('test') {

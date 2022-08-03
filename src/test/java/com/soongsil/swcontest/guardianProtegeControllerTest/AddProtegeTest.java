@@ -1,4 +1,4 @@
-package com.soongsil.swcontest.guardianProtegeController;
+package com.soongsil.swcontest.guardianProtegeControllerTest;
 
 import com.soongsil.swcontest.common.BaseTest;
 import com.soongsil.swcontest.dto.request.AddProtegeRequestDto;
@@ -67,7 +67,7 @@ public class AddProtegeTest extends BaseTest {
 
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("errorCode").value("피보호자 추가 오류 1번"));
+                .andExpect(jsonPath("errorCode").value("보호자-피보호자 오류 1번"));
     }
 
     @Test
@@ -97,7 +97,7 @@ public class AddProtegeTest extends BaseTest {
 
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("errorCode").value("피보호자 추가 오류 2번"));
+                .andExpect(jsonPath("errorCode").value("보호자-피보호자 오류 3번"));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class AddProtegeTest extends BaseTest {
 
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("errorCode").value("피보호자 추가 오류 3번"));
+                .andExpect(jsonPath("errorCode").value("보호자-피보호자 오류 4번"));
     }
 
     @Test
@@ -128,6 +128,6 @@ public class AddProtegeTest extends BaseTest {
 
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("errorCode").value("피보호자 추가 오류 4번"));
+                .andExpect(jsonPath("errorCode").value("보호자-피보호자 오류 5번"));
     }
 }
