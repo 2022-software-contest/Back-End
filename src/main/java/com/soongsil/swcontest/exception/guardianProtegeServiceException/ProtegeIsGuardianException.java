@@ -1,4 +1,4 @@
-package com.soongsil.swcontest.exception.guardianServiceException;
+package com.soongsil.swcontest.exception.guardianProtegeServiceException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

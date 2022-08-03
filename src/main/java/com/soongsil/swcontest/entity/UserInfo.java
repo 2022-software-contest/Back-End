@@ -50,6 +50,12 @@ public class UserInfo extends DateEntity {
 
     private Boolean isGuardian = false;
 
+    @OneToOne(mappedBy = "userInfo")
+    private PushToken pushToken;
+
+    @OneToMany(mappedBy = "userInfo")
+    private List<Pill> pill;
+
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
