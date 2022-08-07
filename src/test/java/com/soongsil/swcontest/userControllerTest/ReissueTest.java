@@ -29,7 +29,6 @@ public class ReissueTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("email").value(email))
                 .andExpect(jsonPath("accessToken").exists())
                 .andExpect(jsonPath("refreshToken").exists());
@@ -46,7 +45,6 @@ public class ReissueTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 4번"));
     }
 
@@ -60,7 +58,6 @@ public class ReissueTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 3번"));
     }
 }
