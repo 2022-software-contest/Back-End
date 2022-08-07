@@ -52,7 +52,6 @@ public class DeleteProtegeTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 4번"));
     }
 
@@ -67,7 +66,6 @@ public class DeleteProtegeTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("보호자-피보호자 오류 1번"));
     }
 
@@ -82,7 +80,6 @@ public class DeleteProtegeTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
 
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 4번"));
     }
 }

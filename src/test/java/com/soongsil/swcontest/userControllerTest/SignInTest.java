@@ -28,7 +28,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("email").value(email))
                 .andExpect(jsonPath("username").value(username))
                 .andExpect(jsonPath("role").value(role.toString()))
@@ -47,7 +46,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("시스템 오류 1번"));
     }
 
@@ -62,7 +60,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("시스템 오류 1번"));
     }
 
@@ -77,7 +74,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 4번"));
     }
 
@@ -92,7 +88,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("시스템 오류 1번"));
     }
 
@@ -107,7 +102,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 2번"));
     }
 
@@ -122,7 +116,6 @@ public class SignInTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_ATOM_XML));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("시스템 오류 2번"));
     }
 }
