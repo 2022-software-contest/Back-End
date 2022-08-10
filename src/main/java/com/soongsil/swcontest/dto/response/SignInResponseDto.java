@@ -14,4 +14,6 @@ public class SignInResponseDto {
     private RoleType role;
     private String accessToken;
     private String refreshToken;
+    private String phoneNumber;
+    private Boolean isGuardian;
 }

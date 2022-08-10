@@ -24,13 +24,14 @@ public class JobService {
         return result;
     }
 
-    public void deleteJob(Scheduler scheduler, String token) {
+    public void deleteJob(Scheduler scheduler, String id) {
         try {
-            scheduler.unscheduleJob(new TriggerKey(token));
-            log.info("스케쥴 삭제 완료 token : {}", token);
+            System.out.println(scheduler.checkExists(JobKey.jobKey(id)));
+            scheduler.unscheduleJob(new TriggerKey(id));
+            log.info("스케쥴 삭제 완료 id : {}", id);
         }
         catch (Exception e) {
-            log.error("[[ERROR]] 잡 삭제 에러 !!! | jobId: {}| msg: {}", token, e.getMessage());
+            log.error("[[ERROR]] 잡 삭제 에러 !!! | jobId: {}| msg: {}", id, e.getMessage());
         }
     }
 
