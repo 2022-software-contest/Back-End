@@ -26,7 +26,6 @@ public class JobService {
 
     public void deleteJob(Scheduler scheduler, String id) {
         try {
-            System.out.println(scheduler.checkExists(JobKey.jobKey(id)));
             scheduler.unscheduleJob(new TriggerKey(id));
             log.info("스케쥴 삭제 완료 id : {}", id);
         }

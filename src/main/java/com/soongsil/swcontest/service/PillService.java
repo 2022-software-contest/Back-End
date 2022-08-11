@@ -23,6 +23,7 @@ import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,6 +38,7 @@ public class PillService {
     private final JobService jobService;
     private final Scheduler scheduler;
     private final PushTokenRepository pushTokenRepository;
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
 
     public List<Long> registerPillTime(String email, List<RegisterPillTimeRequestDto> registerDoseTimeRequestDtos) {
         UserInfo userInfo = userInfoRepository.findByEmail(email);
@@ -117,13 +119,22 @@ public class PillService {
         for (GuardianProtege guardian : guardians) {
             PushToken pushToken = pushTokenRepository.findByUserInfo(guardian.getGuardian());
             if (pushToken != null) {
-                jobService.registerJob(scheduler, guardian.getGuardian().getId().toString(), pushToken.getToken(), LocalDateTime.now());
+                for (Long id : deletePillIdList) {
+                    Optional<Pill> pillRepositoryById = pillRepository.findById(id);
+                    pillRepositoryById.ifPresent(
+                            pill -> firebaseCloudMessageService.sendMessageTo(
+                                    pushToken.getToken(),
+                                    "환자 약 삭제 알림",
+                                    protegeEmail + "환자가 마감일이 " + pill.getTime() + "인 약을 삭제했습니다."));
+                }
             }
         }
 
         for (Long id : deletePillIdList) {
             jobService.deleteJob(scheduler, id.toString());
-            pillRepository.deleteById(id);
+            if (pillRepository.findById(id).isPresent()) {
+                pillRepository.deleteById(id);
+            }
         }
     }
 
@@ -137,7 +148,7 @@ public class PillService {
             throw new UserIsGuardianException("사용자가 보호자 입니다. 보호자 전용 API를 사용해주세요!");
         }
 
-        return protegeInfo.getPill();
+        return pillRepository.findByUserInfo(protegeInfo);
     }
 
     public List<Pill> getPillTimeOnlyGuardian(String guardianEmail, String protegeEmail) {
@@ -155,7 +166,7 @@ public class PillService {
             if(!guardianProtegeRepository.existsByGuardianAndProtege(guardianInfo, protegeInfo)) {
                 throw new GuardianHasNotProtegeException("보호자가 해당 환자를 등록하지 않았습니다.");
             }
-            return protegeInfo.getPill();
+            return pillRepository.findByUserInfo(protegeInfo);
         }
         else {
             throw new UserIsGuardianException("사용자가 환자 입니다. 환자 전용 API를 사용해주세요!");
