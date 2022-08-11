@@ -10,14 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.quartz.Trigger;
 import org.quartz.impl.matchers.GroupMatcher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -53,7 +51,9 @@ public class InitClass {
                         pill.getTime().getHour(),
                         pill.getTime().getMinute(),
                         pill.getTime().getSecond());
-                jobService.registerJob(scheduler, pill.getId().toString(), pushToken.getToken(), convertToday);
+                if (pushToken!=null) {
+                    jobService.registerJob(scheduler, pill.getId().toString(), pushToken.getToken(), convertToday);
+                }
             }
         }
     }
