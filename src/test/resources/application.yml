@@ -12,4 +12,4 @@ cloud:
     stack:
       auto: false
 firebase:
-  url: firebase-url
+  url: https://fcm.googleapis.com/v1/projects/testproject/messages:send

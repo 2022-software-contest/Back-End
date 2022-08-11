@@ -32,7 +32,9 @@ public class SignInTest extends BaseTest {
                 .andExpect(jsonPath("username").value(username))
                 .andExpect(jsonPath("role").value(role.toString()))
                 .andExpect(jsonPath("accessToken").exists())
-                .andExpect(jsonPath("refreshToken").exists());
+                .andExpect(jsonPath("refreshToken").exists())
+                .andExpect(jsonPath("phoneNumber").value(phoneNumber))
+                .andExpect(jsonPath("isGuardian").value(false));
     }
 
     @Test

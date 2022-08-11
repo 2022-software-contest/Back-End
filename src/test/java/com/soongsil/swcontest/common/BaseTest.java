@@ -7,11 +7,12 @@ import com.soongsil.swcontest.dto.response.AddProtegeResponseDto;
 import com.soongsil.swcontest.dto.response.SignInResponseDto;
 import com.soongsil.swcontest.enums.RoleType;
 import com.soongsil.swcontest.jwt.JwtTokenProvider;
-import com.soongsil.swcontest.repository.GuardianProtegeRepository;
-import com.soongsil.swcontest.repository.ImageRepository;
-import com.soongsil.swcontest.repository.PillRepository;
-import com.soongsil.swcontest.repository.UserInfoRepository;
+import com.soongsil.swcontest.repository.*;
+import com.soongsil.swcontest.schedule.JobService;
 import com.soongsil.swcontest.service.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -73,6 +74,16 @@ public class BaseTest {
 
     @Autowired
     public PushTokenService pushTokenService;
+
+    @Autowired
+    public PushTokenRepository pushTokenRepository;
+
+
+    @Autowired
+    public JobService jobService;
+
+    @Autowired
+    public Scheduler scheduler;
 
     @PersistenceContext
     public EntityManager em;
