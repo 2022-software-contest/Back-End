@@ -13,7 +13,7 @@ sleep 10
 
 for RETRY_COUNT in {1..10}
 do
-  STATUS=$(curl -o /dev/null -w "%{http_code}" http://3.38.152.42:${IDLE_PORT})
+  STATUS=$(curl -o /dev/null -w "%{http_code}" http://43.200.98.211:${IDLE_PORT})
 
   if [ ${STATUS} -ge 400 ]
   then # $up_count >= 1 ("real" 문자열이 있는지 검증)
