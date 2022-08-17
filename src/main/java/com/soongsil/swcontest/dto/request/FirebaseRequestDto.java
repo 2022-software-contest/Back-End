@@ -13,4 +13,5 @@ public class FirebaseRequestDto {
     private String targetToken;
     private String title;
     private String body;
+    private String usage;
 }

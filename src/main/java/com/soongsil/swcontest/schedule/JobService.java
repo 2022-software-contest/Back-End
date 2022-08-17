@@ -10,17 +10,17 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 @Service
 public class JobService {
-    public Boolean registerJob(Scheduler scheduler, String id, String token, LocalDateTime time) {
+    public Boolean registerJob(Scheduler scheduler, String id, String body, LocalDateTime time, String usage) {
         boolean result = false;
         try {
             JobDetail jobDetail = JobBuilder.newJob(SendPushAlarmJob.class)
-                    .withIdentity(id).withDescription(token).build();
-            result = setJobSchedule(scheduler, jobDetail, id, token, time);
+                    .withIdentity(id).withDescription(body).build();
+            result = setJobSchedule(scheduler, jobDetail, id, body, time, usage);
         }
         catch (Exception e) {
             log.error(e.getMessage());
         }
-        log.info("스케쥴 성공 "+ id);
+        log.info("스케쥴 성공 "+ id + "번 유저");
         return result;
     }
 
@@ -34,13 +34,13 @@ public class JobService {
         }
     }
 
-    public Boolean setJobSchedule(Scheduler scheduler, JobDetail jobDetail, String id, String token, LocalDateTime time) {
+    public Boolean setJobSchedule(Scheduler scheduler, JobDetail jobDetail, String id, String body, LocalDateTime time, String usage) {
         try {
             String cronExpression = time.format(DateTimeFormatter.ofPattern("ss mm HH dd MM ? yyyy"));
-            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(id)
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(id).withDescription(usage)
                     .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build();
             scheduler.scheduleJob(jobDetail, trigger);
-            log.info(token +" 에게 " + time + " 에 푸시알림을 보냅니다.");
+            log.info(id +" 유저 에게 " + time + " 에 푸시알림을 보냅니다.");
         }
         catch (SchedulerException e) {
             log.error(

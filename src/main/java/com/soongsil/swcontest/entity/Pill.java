@@ -19,7 +19,7 @@ public class Pill extends DateEntity {
     private Long id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserInfo userInfo;
 
     private String pillName;
