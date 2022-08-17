@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
 @RestController
 @RequiredArgsConstructor
 public class FirebaseController {
@@ -18,6 +16,6 @@ public class FirebaseController {
     @PostMapping("/v1/push")
     @ApiOperation("푸시알림 확인 용도(테스트용도 로그인X)")
     public void pushMessage(@RequestBody FirebaseRequestDto testDto) {
-        firebaseCloudMessageService.sendMessageTo(testDto.getTargetToken(), testDto.getTitle(), testDto.getBody());
+        firebaseCloudMessageService.sendMessageTo(testDto.getTargetToken(), testDto.getTitle(), testDto.getBody(), testDto.getUsage());
     }
 }

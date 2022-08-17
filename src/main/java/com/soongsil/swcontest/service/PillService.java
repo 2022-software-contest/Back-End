@@ -7,6 +7,7 @@ import com.soongsil.swcontest.entity.PushToken;
 import com.soongsil.swcontest.entity.UserInfo;
 import com.soongsil.swcontest.exception.guardianProtegeServiceException.GuardianHasNotProtegeException;
 import com.soongsil.swcontest.exception.guardianProtegeServiceException.UserIsGuardianException;
+import com.soongsil.swcontest.exception.pillServiceException.MinuteNotDivideFiveException;
 import com.soongsil.swcontest.exception.userServiceException.UserNotFoundException;
 import com.soongsil.swcontest.repository.GuardianProtegeRepository;
 import com.soongsil.swcontest.repository.PillRepository;
@@ -50,12 +51,14 @@ public class PillService {
             throw new UserIsGuardianException("사용자가 보호자 이므로 약먹을 시간을 등록할 수 없습니다.");
         }
 
-        PushToken pushToken = pushTokenRepository.findByUserInfo(userInfo);
-
         List<Long> registerPillTimeResponseDtos = new ArrayList<>();
         for (RegisterPillTimeRequestDto registerDoseTimeRequestDto : registerDoseTimeRequestDtos) {
             for (RegisterPillTimeRequestDto.SpecificTime specificTime : registerDoseTimeRequestDto.getEatTime()) {
                 try {
+                    if ((specificTime.getMinutes()%5)!=0) {
+                        throw new MinuteNotDivideFiveException("입력한 분은 5분 단위로 나눌수 있어야합니다.");
+                    }
+
                     LocalDateTime time = LocalDateTime.of(
                             registerDoseTimeRequestDto.getDateYear(),
                             registerDoseTimeRequestDto.getDateMonth(),
@@ -78,21 +81,16 @@ public class PillService {
                             )
                     ).getId();
                     registerPillTimeResponseDtos.add(id);
-                    if (pushToken != null) {
-                        LocalDateTime convertToday = LocalDateTime.of(
-                                LocalDateTime.now().getYear(),
-                                LocalDateTime.now().getMonth(),
-                                LocalDateTime.now().getDayOfMonth(),
-                                time.getHour(),
-                                time.getMinute(),
-                                time.getSecond());
-                        if (convertToday.isBefore(LocalDateTime.now())) {
-                            continue;
-                        }
-                        jobService.registerJob(scheduler, id.toString(), pushToken.getToken(), convertToday);
-                    }
                 } catch (DateTimeException e) {
                     log.warn("LocalDateTime으로 바꾸는 중 오류가 발생했습니다. 입력받은 값={} {} {} {} {} {}",
+                            registerDoseTimeRequestDto.getDateYear(),
+                            registerDoseTimeRequestDto.getDateMonth(),
+                            registerDoseTimeRequestDto.getDateDay(),
+                            specificTime.getHour(),
+                            specificTime.getMinutes(),
+                            specificTime.getSec());
+                } catch (MinuteNotDivideFiveException e) {
+                    log.warn("입력받은 분이 5로 나눈 몫이 0이 아님. 입력받은 값={} {} {} {} {} {}",
                             registerDoseTimeRequestDto.getDateYear(),
                             registerDoseTimeRequestDto.getDateMonth(),
                             registerDoseTimeRequestDto.getDateDay(),
@@ -125,13 +123,12 @@ public class PillService {
                             pill -> firebaseCloudMessageService.sendMessageTo(
                                     pushToken.getToken(),
                                     "환자 약 삭제 알림",
-                                    protegeEmail + "환자가 마감일이 " + pill.getTime() + "인 약을 삭제했습니다."));
+                                    protegeEmail + " 환자가 마감일이 " + pill.getTime() + "인 " + pill.getPillName() +"정을 삭제했습니다.", "delete"));
                 }
             }
         }
 
         for (Long id : deletePillIdList) {
-            jobService.deleteJob(scheduler, id.toString());
             if (pillRepository.findById(id).isPresent()) {
                 pillRepository.deleteById(id);
             }

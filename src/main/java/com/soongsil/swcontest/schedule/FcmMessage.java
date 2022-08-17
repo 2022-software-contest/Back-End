@@ -17,7 +17,7 @@ public class FcmMessage {
     public static class Message {
         private Data data;
         private String token;
-        private String priority;
+        private Android android;
     }
 
     @Builder
@@ -26,5 +26,13 @@ public class FcmMessage {
     public static class Data {
         private String title;
         private String body;
+        private String usage;
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class Android {
+        private String priority;
     }
 }
