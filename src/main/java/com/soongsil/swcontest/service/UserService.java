@@ -61,6 +61,19 @@ public class UserService {
     }
 
     @Transactional
+    public void updatePw(String email, String oldPw, String newPw) {
+        UserInfo user = userRepository.findByEmail(email);
+        if(user==null) {
+            throw new UserNotFoundException("사용자를 찾을 수 없습니다.");
+        }
+        if (!bCryptPasswordEncoder.matches(oldPw, user.getPassword())) {
+            throw new PasswordIncorrectException("예전 비밀번호가 맞지 않습니다.");
+        }
+
+        userRepository.save(new UserInfo(user.getId(), user.getEmail(), bCryptPasswordEncoder.encode(newPw), user.getUsername(), RoleType.USER, null, user.getPhoneNumber(), user.getIsGuardian()));
+    }
+
+    @Transactional
     public ReissueResponseDto reissue(String refreshToken, String email) {
         UserInfo user = userRepository.findByEmail(email);
         if (user==null) {
@@ -92,6 +105,8 @@ public class UserService {
         }
         user.updateRefreshToken(null);
     }
+
+
 
     @Transactional
     public void withdraw(String accessToken, String email) {
