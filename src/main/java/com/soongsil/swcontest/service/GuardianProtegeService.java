@@ -30,11 +30,6 @@ public class GuardianProtegeService {
 
     private final PillRepository pillRepository;
 
-    public boolean classifyGuardianProtege(String email) {
-        UserInfo userInfo = userInfoRepository.findByEmail(email);
-        return userInfo.getIsGuardian();
-    }
-
     public AddProtegeResponseDto addProtege(String guardianEmail, String protegeEmail, String protegePhoneNumber) {
         UserInfo guardianInfo = userInfoRepository.findByEmail(guardianEmail);
 

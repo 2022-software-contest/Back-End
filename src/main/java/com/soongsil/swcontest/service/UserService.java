@@ -69,8 +69,7 @@ public class UserService {
         if (!bCryptPasswordEncoder.matches(oldPw, user.getPassword())) {
             throw new PasswordIncorrectException("예전 비밀번호가 맞지 않습니다.");
         }
-
-        userRepository.save(new UserInfo(user.getId(), user.getEmail(), bCryptPasswordEncoder.encode(newPw), user.getUsername(), RoleType.USER, null, user.getPhoneNumber(), user.getIsGuardian()));
+        user.updatePassword(newPw);
     }
 
     @Transactional
@@ -105,8 +104,6 @@ public class UserService {
         }
         user.updateRefreshToken(null);
     }
-
-
 
     @Transactional
     public void withdraw(String accessToken, String email) {

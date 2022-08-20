@@ -60,6 +60,10 @@ public class UserInfo extends DateEntity {
         this.refreshToken = refreshToken;
     }
 
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
+
     public UserInfo(Long id, String email, String password, String username, RoleType role, String refreshToken, String phoneNumber, Boolean isGuardian) {
         this.id = id;
         this.email = email;
