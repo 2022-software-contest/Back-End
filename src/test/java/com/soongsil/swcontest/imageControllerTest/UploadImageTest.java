@@ -54,7 +54,6 @@ public class UploadImageTest extends BaseTest {
                         .header("Authorization", accessToken));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 4번"));
     }
 }

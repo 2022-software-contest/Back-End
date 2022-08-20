@@ -43,7 +43,6 @@ public class WithdrawTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 4번"));
     }
 
@@ -57,7 +56,6 @@ public class WithdrawTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON));
         //then
         result.andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("errorCode").value("유저서비스 오류 5번"));
     }
 }

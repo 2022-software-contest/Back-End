@@ -57,7 +57,7 @@ public class UserService {
         TokenInfo accessTokenDto = jwtTokenProvider.createJwtAccessToken(email);
         TokenInfo refreshTokenDto = jwtTokenProvider.createJwtRefreshToken(email);
         user.updateRefreshToken(refreshTokenDto.getToken());
-        return new SignInResponseDto(user.getEmail(), user.getUsername(), user.getRole(), accessTokenDto.getToken(), refreshTokenDto.getToken());
+        return new SignInResponseDto(user.getEmail(), user.getUsername(), user.getRole(), accessTokenDto.getToken(), refreshTokenDto.getToken(), user.getPhoneNumber(), user.getIsGuardian());
     }
 
     @Transactional

@@ -51,7 +51,8 @@ public class WebSecurityConfig {
                 "/v1/signIn",
                 "/v1/display",
                 "/",
-                "/v1/push"
+                "/v1/push",
+                "/logs"
         );
     }
 

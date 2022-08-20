@@ -17,8 +17,6 @@ server:
   port: ${SERVER_PORT}
 jwt:
   secret: ${JWT_SECRET}
-firebase:
-  url: ${FIREBASE_URL}
 
 cloud:
   aws:

@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.http.HttpHeaders;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +19,12 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class FirebaseCloudMessageService {
-
-    @Value("${firebase.url}")
-    private String API_URL;
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/ssucontesteighteen/messages:send";
     private final ObjectMapper objectMapper;
 
-    public void sendMessageTo(String targetToken, String title, String body) {
+    public void sendMessageTo(String targetToken, String title, String body, String usage) {
         try {
-            String message = makeMessage(targetToken, title, body);
+            String message = makeMessage(targetToken, title, body, usage);
             OkHttpClient client = new OkHttpClient();
             RequestBody requestBody = RequestBody.create(message,
                     MediaType.get("application/json; charset=utf-8"));
@@ -40,24 +37,29 @@ public class FirebaseCloudMessageService {
 
             Response response = client.newCall(request).execute();
             response.body().close();
-            log.info("FirebaseCloudMessageService.sendMessageTo"+targetToken+" " + title + " " + body);
+            log.info("FirebaseCloudMessageService.sendMessageTo "+targetToken+" " + title + " " + body);
         } catch (Exception e) {
+            e.printStackTrace();
             log.warn("푸시알림이 정상적으로 보내지지 않았습니다..");
-            log.warn("FirebaseCloudMessageService.sendMessageTo"+targetToken+" " + title + " " + body);
+            log.warn("FirebaseCloudMessageService.sendMessageTo "+targetToken+" " + title + " " + body);
         }
 //        System.out.println(response.body().string());
     }
 
-    private String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException {
+    private String makeMessage(String targetToken, String title, String body, String usage) throws JsonParseException, JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)
-                        .notification(FcmMessage.Notification.builder()
+                        .data(FcmMessage.Data.builder()
                                 .title(title)
                                 .body(body)
-                                .image(null)
-                                .build()
-                        ).build()).validateOnly(false).build();
+                                .usage(usage)
+                                .build())
+                        .android(FcmMessage.Android.builder()
+                                .priority("high")
+                                .build())
+                        .build())
+                .build();
 
         return objectMapper.writeValueAsString(fcmMessage);
     }

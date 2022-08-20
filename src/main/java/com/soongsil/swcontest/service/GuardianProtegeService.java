@@ -1,5 +1,6 @@
 package com.soongsil.swcontest.service;
 
+import com.soongsil.swcontest.dto.dto.UserInfoDto;
 import com.soongsil.swcontest.dto.response.AddProtegeResponseDto;
 import com.soongsil.swcontest.dto.response.GetGuardiansResponseDto;
 import com.soongsil.swcontest.dto.response.GetProtegePillRecordsResponseDto;
@@ -123,10 +124,16 @@ public class GuardianProtegeService {
         }
 
         List<GuardianProtege> guardians = guardianProtegeRepository.findAllByProtege(protegeInfo);
-        ArrayList<UserInfo> guardianInfos = new ArrayList<>();
+        ArrayList<UserInfoDto> guardianInfos = new ArrayList<>();
         for (GuardianProtege guardian : guardians) {
             UserInfo userInfo = userInfoRepository.findByEmail(guardian.getGuardian().getEmail());
-            guardianInfos.add(userInfo);
+            guardianInfos.add(new UserInfoDto(
+                    userInfo.getId(),
+                    userInfo.getEmail(),
+            userInfo.getUsername(),
+            userInfo.getPhoneNumber(),
+            userInfo.getIsGuardian()
+            ));
         }
         return new GetGuardiansResponseDto(guardianInfos.size(), guardianInfos);
     }
@@ -142,10 +149,16 @@ public class GuardianProtegeService {
         }
 
         List<GuardianProtege> proteges = guardianProtegeRepository.findAllByGuardian(guardianInfo);
-        ArrayList<UserInfo> protegeInfos = new ArrayList<>();
-        for (GuardianProtege guardian : proteges) {
-            UserInfo userInfo = userInfoRepository.findByEmail(guardian.getGuardian().getEmail());
-            protegeInfos.add(userInfo);
+        ArrayList<UserInfoDto> protegeInfos = new ArrayList<>();
+        for (GuardianProtege protege : proteges) {
+            UserInfo userInfo = userInfoRepository.findByEmail(protege.getProtege().getEmail());
+            protegeInfos.add(new UserInfoDto(
+                    userInfo.getId(),
+                    userInfo.getEmail(),
+                    userInfo.getUsername(),
+                    userInfo.getPhoneNumber(),
+                    userInfo.getIsGuardian()
+            ));
         }
         return new GetProtegesResponseDto(protegeInfos.size(), protegeInfos);
     }

@@ -32,4 +32,15 @@ public class PushTokenService {
         }
         return new RegisterTokenResponseDto(token);
     }
+
+    public void deletePushToken(String email) {
+        UserInfo userInfo = userInfoRepository.findByEmail(email);
+        if (userInfo == null) {
+            throw new UserNotFoundException("FCM토큰을 삭제하기위한 유저가 없습니다.");
+        }
+        PushToken pushToken = pushTokenRepository.findByUserInfo(userInfo);
+        if(pushToken!=null) {
+            pushToken.setToken(null);
+        }
+    }
 }
