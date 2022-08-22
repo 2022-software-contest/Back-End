@@ -13,10 +13,8 @@ import com.soongsil.swcontest.repository.GuardianProtegeRepository;
 import com.soongsil.swcontest.repository.PillRepository;
 import com.soongsil.swcontest.repository.PushTokenRepository;
 import com.soongsil.swcontest.repository.UserInfoRepository;
-import com.soongsil.swcontest.schedule.JobService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.Scheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +34,6 @@ public class PillService {
     private final GuardianProtegeRepository guardianProtegeRepository;
 
     private final PillRepository pillRepository;
-    private final JobService jobService;
-    private final Scheduler scheduler;
     private final PushTokenRepository pushTokenRepository;
     private final FirebaseCloudMessageService firebaseCloudMessageService;
 
@@ -167,6 +163,29 @@ public class PillService {
         }
         else {
             throw new UserIsGuardianException("사용자가 환자 입니다. 환자 전용 API를 사용해주세요!");
+        }
+    }
+
+    public void reportPillTime(String protegeEmail, String pillNames) {
+        UserInfo protegeInfo = userInfoRepository.findByEmail(protegeEmail);
+        if(protegeInfo==null) {
+            throw new UserNotFoundException("환자본인을 찾을 수 없습니다.");
+        }
+
+        List<GuardianProtege> guardians = guardianProtegeRepository.findAllByProtege(protegeInfo);
+        for (GuardianProtege guardian : guardians) {
+            UserInfo guardianInfo = userInfoRepository.findByEmail(guardian.getGuardian().getEmail());
+            if (guardianInfo!=null) {
+                PushToken pushToken = pushTokenRepository.findByUserInfo(guardianInfo);
+                if(pushToken!=null && pushToken.getToken()!=null) {
+                    firebaseCloudMessageService.sendMessageTo(
+                            pushToken.getToken(),
+                            "환자가 약을 먹지 않았습니다.",
+                            protegeEmail+"환자가 " + pillNames + "(정)을 먹지 않았습니다.",
+                            "not eat");
+                }
+
+            }
         }
     }
 }
