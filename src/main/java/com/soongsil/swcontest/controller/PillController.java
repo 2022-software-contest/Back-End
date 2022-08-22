@@ -2,6 +2,7 @@ package com.soongsil.swcontest.controller;
 
 import com.soongsil.swcontest.dto.request.GetPillTimeOnlyGuardianRequestDto;
 import com.soongsil.swcontest.dto.request.RegisterPillTimeRequestDto;
+import com.soongsil.swcontest.dto.request.ReportPillTimeRequestDto;
 import com.soongsil.swcontest.entity.Pill;
 import com.soongsil.swcontest.security.AuthInfo;
 import com.soongsil.swcontest.security.Authenticated;
@@ -43,5 +44,11 @@ public class PillController {
     @GetMapping("/v1/getPillGuardian")
     public List<Pill> getPillTimeOnlyGuardian(@Authenticated AuthInfo authInfo, @Valid @RequestBody GetPillTimeOnlyGuardianRequestDto getPillTimeOnlyGuardianRequestDto) {
         return pillService.getPillTimeOnlyGuardian(authInfo.getEmail(), getPillTimeOnlyGuardianRequestDto.getProtegeEmail());
+    }
+
+    @ApiOperation("약 안먹었을때 사용")
+    @PostMapping("/v1/report")
+    public void reportPillTime(@Authenticated AuthInfo authInfo, @RequestBody ReportPillTimeRequestDto reportPillTimeRequestDto) {
+        pillService.reportPillTime(authInfo.getEmail(), reportPillTimeRequestDto.getPillNames());
     }
 }
