@@ -10,8 +10,6 @@ import com.soongsil.swcontest.jwt.JwtTokenProvider;
 import com.soongsil.swcontest.repository.*;
 import com.soongsil.swcontest.schedule.JobService;
 import com.soongsil.swcontest.service.*;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -78,6 +76,8 @@ public class BaseTest {
     @Autowired
     public PushTokenRepository pushTokenRepository;
 
+    @MockBean
+    public FirebaseCloudMessageService firebaseCloudMessageService;
 
     @Autowired
     public JobService jobService;
