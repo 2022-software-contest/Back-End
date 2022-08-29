@@ -13,3 +13,12 @@ cloud:
       auto: false
 firebase:
   url: https://fcm.googleapis.com/v1/projects/testproject/messages:send
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/base-path"
+  metrics:
+    tags:
+      application: sw-contest
