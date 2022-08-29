@@ -2,6 +2,7 @@ package com.soongsil.swcontest.controller;
 
 import com.soongsil.swcontest.dto.request.SignInRequestDto;
 import com.soongsil.swcontest.dto.request.SignUpRequestDto;
+import com.soongsil.swcontest.dto.request.ChangePasswordRequestDto;
 import com.soongsil.swcontest.dto.response.ReissueResponseDto;
 import com.soongsil.swcontest.dto.response.SignInResponseDto;
 import com.soongsil.swcontest.dto.response.SignUpResponseDto;
@@ -12,6 +13,7 @@ import com.soongsil.swcontest.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,6 +59,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(@Authenticated AuthInfo authInfo) {
         userService.logout(authInfo.getToken(), authInfo.getEmail());
+    }
+
+    @ApiOperation("비밀번호 변경")
+    @PostMapping("/v1/changePassword")
+    public void changePassword(@Authenticated AuthInfo authInfo, @RequestBody @Validated ChangePasswordRequestDto changePasswordRequestDto) {
+        userService.changePassword(authInfo.getEmail(), changePasswordRequestDto.getOldPassword(), changePasswordRequestDto.getNewPassword());
     }
 
     @ApiOperation("회원탈퇴 액세스토큰을 사용할 것")
