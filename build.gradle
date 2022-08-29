@@ -39,7 +39,11 @@ dependencies {
 	// 통신 라이브러리
 	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
-	testImplementation 'org.mockito:mockito-inline:4.6.1'
+	// 모니터링
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
+	testImplementation 'org.mockito:mockito-inline:4.7.0'
 }
 
 tasks.named('test') {
