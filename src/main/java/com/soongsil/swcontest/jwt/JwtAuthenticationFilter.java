@@ -23,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        long start = System.currentTimeMillis();
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
         if (bearerToken==null) {
             throw new HeaderHasNotAuthorization("Authorization헤더에 토큰이 없습니다.");
@@ -37,5 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new InvalidTokenException("토큰이 유효하지 않습니다.");
         }
         filterChain.doFilter(request, response);
+        long end = System.currentTimeMillis();
+        System.out.println(end-start);
     }
 }

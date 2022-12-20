@@ -1,6 +1,7 @@
 package com.soongsil.swcontest.config;
 
 import com.soongsil.swcontest.exception.ExceptionHandlerFilter;
+import com.soongsil.swcontest.jwt.AppVersionFilter;
 import com.soongsil.swcontest.jwt.JwtAuthenticationFilter;
 import com.soongsil.swcontest.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,8 @@ public class WebSecurityConfig {
                 "/v1/push",
                 "/logs",
                 BASE_PATH+"/**",
-                "/v1/index"
+                "/v1/index",
+                "/human/decrease"
         );
     }
 
